@@ -66,14 +66,16 @@ class UserController {
       }
     }
 
-    // if user provides informs his current password incorrectly (apply AND condition to make sure oldPassword was sent)
-    if (oldPassword && !(await user.checkPassword(oldPassword))) {
-      return res.status(401).json( { error: 'Password does not match'} );
-    } 
+    if (oldPassword && password) {
+      // if user provides informs his current password incorrectly (apply AND condition to make sure oldPassword was sent)
+      if (oldPassword && !(await user.checkPassword(oldPassword))) {
+        return res.status(401).json( { error: 'Password does not match'} );
+      } 
 
-    //if user provides same password for old and new (password unchanged)
-    if ( (await user.checkPassword(oldPassword)) == (await user.checkPassword(req.body.password)) ) {
-      return res.status(401).json( { error: 'New password must be different'} );
+      //if user provides same password for old and new (password unchanged)
+      if ( (await user.checkPassword(oldPassword)) == (await user.checkPassword(req.body.password)) ) {
+        return res.status(401).json( { error: 'New password must be different'} );
+      }
     }
 
     const { id, name, provider } = await user.update(req.body);
