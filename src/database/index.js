@@ -14,7 +14,9 @@ class Database {
   init() {
     this.connection = new Sequelize(databaseConfig);    // get connection info from database.js config file
 
-    models.map(model => model.init(this.connection));   // connect and map models to each table
+    models
+      .map(model => model.init(this.connection))   // connect and map models to each table
+      .map(model => model.associate && model.associate(this.connection.models)); // call associate function when it is present in model
   }
 }
 
