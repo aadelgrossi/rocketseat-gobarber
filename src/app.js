@@ -1,5 +1,6 @@
 import express from 'express';
 import routes from './routes';
+import path from 'path';
 
 import './database'
 
@@ -13,6 +14,9 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
+
+    // create statis route to map /files to a directory inside app
+    this.server.use('/files', express.static(path.resolve(__dirname, '..', 'tmp', 'uploads')));
   }
 
   routes() {
