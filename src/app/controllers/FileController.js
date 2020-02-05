@@ -1,4 +1,5 @@
 import multer from 'multer';
+import File from '../models/File'
 
 class FileController {
 
