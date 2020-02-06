@@ -8,10 +8,14 @@ import * as Yup from 'yup';
 class AppointmentController {
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+
     const appointments = await Appointment.findAll({
       where: { user_id: req.userId, canceled_at: null },
       order: ['date'],
       attributes: ['id','date'],
+      limit: 20,              // only get 20 results per call
+      offset: (page-1) * 20,  // calculate which section of results to be selected
       include: [
         {
           model: User, as: 'provider',
