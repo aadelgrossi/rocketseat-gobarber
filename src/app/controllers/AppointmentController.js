@@ -1,9 +1,11 @@
+import { startOfHour, parseISO, isBefore } from 'date-fns'
+import * as Yup from 'yup';
+
 import Appointment from '../models/Appointment'
+import Notification from '../schemas/Notification'
 import User from '../models/User'
 import File from '../models/File'
 
-import { startOfHour, parseISO, isBefore } from 'date-fns'
-import * as Yup from 'yup';
 
 class AppointmentController {
 
@@ -78,6 +80,10 @@ class AppointmentController {
       provider_id,
       date: hourStart
     });
+
+    /**
+     * Notify provider of new appointment
+     */
 
     return res.json(appointment);
 
