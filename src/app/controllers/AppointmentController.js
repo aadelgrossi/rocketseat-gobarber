@@ -1,4 +1,4 @@
-import { startOfHour, parseISO, isBefore, format } from 'date-fns'
+import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns'
 import pt from 'date-fns/locale/pt'
 import * as Yup from 'yup';
 
@@ -107,7 +107,18 @@ class AppointmentController {
       });
     }
 
-    return res.json({});
+    const dateWithSub = subHours(appointment.date, 2) // remove 2 hours from appointment time
+
+    if( isBefore(dateWithSub, new Date())) {          // if appointment time is less than 2 hours away, do not cancel 
+      return res.status(401).json({
+        error: "Appointment can only be canceled up to 2 hours in advance"
+      })
+    }
+
+    appointment.canceled_at = new Date();
+    await appointment.save();
+
+    return res.json(appointment);
   }
 }
 
