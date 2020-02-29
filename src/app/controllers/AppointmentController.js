@@ -97,6 +97,18 @@ class AppointmentController {
     return res.json(appointment);
 
   }
+
+  async delete(req, res) {
+    const appointment = await Appointment.findByPk(req.params.id);
+
+    if (appointment.user_id !=  req.userId) {
+      return res.status(401).json({
+        error: "Unable to cancel appointment. Permission denied."
+      });
+    }
+
+    return res.json({});
+  }
 }
 
 export default new AppointmentController();
