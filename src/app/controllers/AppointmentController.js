@@ -6,7 +6,6 @@ import Appointment from '../models/Appointment'
 import Notification from '../schemas/Notification'
 import User from '../models/User'
 import File from '../models/File'
-import Mail from '../../lib/Mail'
 
 
 class AppointmentController {
@@ -115,8 +114,6 @@ class AppointmentController {
       ]
     });
 
-    const formattedDate = format(appointment.date, "dd 'de' MMMM', às' H:mm'h'", { locale: pt} )
-
     if (appointment.user_id !=  req.userId) {
       return res.status(401).json({
         error: "Unable to cancel appointment. Permission denied."
@@ -133,17 +130,6 @@ class AppointmentController {
 
     appointment.canceled_at = new Date();
     await appointment.save();
-
-    await Mail.sendMail({
-      to: `${appointment.provider.name} <${appointment.provider.email}>`,
-      subject: 'Agendamento cancelado',
-      template: 'cancellation',
-      context: {
-        provider: appointment.provider.name,
-        user: appointment.client.name,
-        date: formattedDate
-      }
-    })
 
     return res.json(appointment);
   }
