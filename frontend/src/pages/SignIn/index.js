@@ -13,8 +13,8 @@ export default function SignIn() {
     <>
       <img src={logo} alt="GoBarber" />
       <Form onSubmit={handleSubmit}>
-        <Input type="email" placeholder="Seu email" />
-        <Input type="password" placeholder="Senha" />
+        <Input name='name' type="email" placeholder="Seu email" />
+        <Input name='password' type="password" placeholder="Senha" />
 
         <button type="submit">Acessar</button>
         <Link to="/signup">Criar conta gratuita</Link>
