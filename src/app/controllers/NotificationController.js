@@ -1,4 +1,4 @@
-import Notification from '../schemas/notification';
+import Notification from '../schemas/Notification';
 import User from '../models/User';
 
 class NotificationController {

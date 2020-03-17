@@ -3,7 +3,7 @@ import pt from 'date-fns/locale/pt';
 import * as Yup from 'yup';
 
 import Appointment from '../models/Appointment';
-import Notification from '../schemas/notification';
+import Notification from '../schemas/Notification';
 import User from '../models/User';
 import File from '../models/File';
 
