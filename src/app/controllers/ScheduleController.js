@@ -1,17 +1,18 @@
-import { startOfDay, endOfDay, parseISO } from 'date-fns'
-import { Op } from 'sequelize'
+import { startOfDay, endOfDay, parseISO } from 'date-fns';
+import { Op } from 'sequelize';
 
-import Appointment from '../models/Appointment'
-import User from '../models/User'
+import Appointment from '../models/Appointment';
+import User from '../models/User';
 
 class ScheduleController {
   async index(req, res) {
-
     // check if provider ID is a provider
-    const isProvider = await User.findOne( { where: { id: req.userId, provider: true }})
+    const isProvider = await User.findOne({
+      where: { id: req.userId, provider: true },
+    });
 
     if (!isProvider) {
-      return res.status(401).json( {error: 'ID does not match a provider'})
+      return res.status(401).json({ error: 'ID does not match a provider' });
     }
 
     // get current date in query params
@@ -27,18 +28,19 @@ class ScheduleController {
         provider_id: req.userId,
         canceled_at: null,
         date: {
-          [Op.between]: [ startOfDay(parsedDate), endOfDay(parsedDate) ]
+          [Op.between]: [startOfDay(parsedDate), endOfDay(parsedDate)],
         },
       },
       order: ['date'],
       attributes: ['id', 'date'],
       include: [
         {
-          model: User, as: 'client',
-          attributes: ['name']
-        }
-      ]
-    })
+          model: User,
+          as: 'client',
+          attributes: ['name'],
+        },
+      ],
+    });
 
     return res.json(appointments);
   }

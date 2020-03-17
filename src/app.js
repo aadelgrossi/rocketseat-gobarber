@@ -3,11 +3,11 @@ import express from 'express';
 import path from 'path';
 import Youch from 'youch';
 import * as Sentry from '@sentry/node';
-import sentryConfig from './config/sentry'
-import 'express-async-errors'
+import sentryConfig from './config/sentry';
+import 'express-async-errors';
 import routes from './routes';
 
-import './database'
+import './database';
 
 class App {
   constructor() {
@@ -25,7 +25,10 @@ class App {
     this.server.use(express.json());
 
     // create statis route to map /files to a directory inside app
-    this.server.use('/files', express.static(path.resolve(__dirname, '..', 'tmp', 'uploads')));
+    this.server.use(
+      '/files',
+      express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
+    );
   }
 
   routes() {
@@ -41,8 +44,8 @@ class App {
         return res.status(500).json(errors);
       }
 
-      return res.status(500).json({error: 'Internal server error'});
-    })
+      return res.status(500).json({ error: 'Internal server error' });
+    });
   }
 }
 

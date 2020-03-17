@@ -4,8 +4,8 @@ import redisConfig from '../config/redis';
 
 const jobs = [CancellationMail];
 
-class Queue { 
-  constructor(){
+class Queue {
+  constructor() {
     this.queues = [];
     this.init();
   }
@@ -17,20 +17,17 @@ class Queue {
           redis: redisConfig,
         }),
         handle,
-      }
-    })
+      };
+    });
   }
 
   add(queue, job) {
-    return this.queues[queue]
-      .bee
-      .createJob(job)
-      .save();
+    return this.queues[queue].bee.createJob(job).save();
   }
 
   processQueue() {
     jobs.forEach(job => {
-      const { bee, handle} = this.queues[job.key];
+      const { bee, handle } = this.queues[job.key];
       bee.on('failed', this.handleFailure).process(handle);
     });
   }

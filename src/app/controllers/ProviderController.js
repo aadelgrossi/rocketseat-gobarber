@@ -1,5 +1,5 @@
-import User from '../models/User'
-import File from '../models/File'
+import User from '../models/User';
+import File from '../models/File';
 
 class ProviderController {
   async index(req, res) {
@@ -10,14 +10,13 @@ class ProviderController {
         {
           model: File,
           as: 'avatar',
-          attributes: ['name', 'path', 'url']
-        }
-      ]
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
     });
 
     return res.json(providers);
   }
-
 }
 
 export default new ProviderController();
