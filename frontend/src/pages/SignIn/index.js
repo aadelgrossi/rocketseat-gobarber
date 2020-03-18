@@ -1,17 +1,23 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
+
+import { signInRequest } from '~/store/modules/auth/actions';
 import { Form } from '~/pages/_layouts/auth/styles';
 import Input from '~/components/Input';
+
 import logo from '~/assets/logo.svg';
 
 export default function SignIn() {
   const formRef = useRef(null);
+  const dispatch = useDispatch();
 
   async function handleSubmit(data) {
     try {
       // Remove all previous errors
       formRef.current.setErrors({});
+      const { email, password } = data;
 
       const schema = Yup.object().shape({
         email: Yup.string()
@@ -23,6 +29,8 @@ export default function SignIn() {
       await schema.validate(data, {
         abortEarly: false,
       });
+
+      dispatch(signInRequest(email, password));
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const validationErrors = {};
