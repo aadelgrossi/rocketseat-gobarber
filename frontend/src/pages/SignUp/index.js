@@ -1,17 +1,22 @@
 import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
+
+import { signUpRequest } from '~/store/modules/auth/actions';
 import { Form } from '~/pages/_layouts/auth/styles';
 import Input from '~/components/Input';
 import logo from '~/assets/logo.svg';
 
 export default function SignUp() {
   const formRef = useRef(null);
+  const dispatch = useDispatch();
 
   async function handleSubmit(data) {
     try {
       // Remove all previous errors
       formRef.current.setErrors({});
+      const { name, email, password } = data;
 
       const schema = Yup.object().shape({
         name: Yup.string().required('Campo obrigatório'),
@@ -26,6 +31,8 @@ export default function SignUp() {
       await schema.validate(data, {
         abortEarly: false,
       });
+
+      dispatch(signUpRequest(name, email, password));
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const validationErrors = {};
