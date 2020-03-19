@@ -1,4 +1,14 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
 
 export const Container = styled.div`
   max-width: 600px;
@@ -25,10 +35,32 @@ export const Container = styled.div`
   }
 
   ul {
+    visibility: ${props => (props.loading ? 'hidden' : 'visible')};
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 15px;
     margin-top: 30px;
+  }
+
+  div {
+    display: ${props => (props.loading ? 'flex' : 'none')};
+    margin: 20px 0;
+    align-self: center;
+    align-items: center;
+    color: #fff;
+    font-size: 16px;
+
+    svg {
+      margin-right: 10px;
+    }
+
+    ${props =>
+      props.loading &&
+      css`
+        svg {
+          animation: ${rotate} 2s linear infinite;
+        }
+      `}
   }
 `;
 

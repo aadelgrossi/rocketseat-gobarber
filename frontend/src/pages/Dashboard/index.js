@@ -16,6 +16,7 @@ import pt from 'date-fns/locale/pt';
 import { utcToZonedTime } from 'date-fns-tz';
 
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import { FaSpinner } from 'react-icons/fa';
 import api from '~/services/api';
 
 import { Container, Appointment } from './styles';
@@ -23,6 +24,7 @@ import { Container, Appointment } from './styles';
 const range = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
 export default function Dashboard() {
+  const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(new Date());
   const [schedule, setSchedule] = useState([]);
 
@@ -41,6 +43,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function loadSchedule() {
+      setLoading(true);
       const response = await api.get('schedule', {
         params: { date },
       });
@@ -64,13 +67,14 @@ export default function Dashboard() {
       });
 
       setSchedule(data);
+      setLoading(false);
     }
 
     loadSchedule();
   }, [date]);
 
   return (
-    <Container>
+    <Container loading={loading}>
       <header>
         <button type="button" onClick={handlePrevDay}>
           <MdChevronLeft size={36} color="#fff" />
@@ -81,6 +85,10 @@ export default function Dashboard() {
         </button>
       </header>
 
+      <div loading>
+        <FaSpinner color="#FFF" size="25" />
+        Carregando...
+      </div>
       <ul>
         {schedule.map(apt => (
           <Appointment
