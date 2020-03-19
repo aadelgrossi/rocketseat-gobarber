@@ -19,6 +19,8 @@ const upload = multer(multerConfig);
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 
+routes.get('/hours', AvailableController.hours);
+
 routes.use(authMiddleware); // only for routes below
 routes.put('/users', UserController.update);
 
