@@ -18,7 +18,7 @@ export default function RouteWrapper({
     return <Redirect to="/" />;
   }
 
-  if (signed && isPrivate) {
+  if (signed && !isPrivate) {
     return <Redirect to="/dashboard" />;
   }
 
@@ -38,10 +38,12 @@ export default function RouteWrapper({
 
 RouteWrapper.propTypes = {
   isPrivate: PropTypes.bool,
+  path: PropTypes.string,
   component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
     .isRequired,
 };
 
 RouteWrapper.defaultProps = {
   isPrivate: false,
+  path: '/',
 };
